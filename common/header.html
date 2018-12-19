@@ -1,7 +1,6 @@
 <script type="text/discourse-plugin" version="0.8.26">
 let categoryThemeList = settings.category_icon_list.split('|');
 let lockIcon = settings.category_lock_icon || 'lock';
-console.log(settings.category_lock_icon);
 
 const { iconHTML } = require("discourse-common/lib/icon-library");
 const { isRTL } = require("discourse/lib/text-direction");
