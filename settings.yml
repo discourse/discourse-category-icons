@@ -1,0 +1,12 @@
+category_icon_list: 
+  default: 'help,question-circle,#CC0000|'
+  type: 'list'
+  description: 'Enter comma-delimited configuration for categories, in the format "category-slug,icon,color".'
+svg_icons: 
+  default: 'question-circle'
+  type: 'list'
+  list_type: 'compact'
+  description: 'List of FontAwesome 5 icons used in this theme component'
+category_lock_icon: 
+  default: ''
+  description: 'Enter the name of a FontAwesome 5 icon to display instead of the lock icon next to private categories.'
