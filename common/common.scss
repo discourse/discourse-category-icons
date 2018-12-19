@@ -1,3 +1,11 @@
 span.category-badge-icon {
 	display: inline-flex;
+	.d-icon {
+	    opacity: 1;
+	    font-size: 1.3em;
+	}
+}
+
+.badge-wrapper .badge-category .d-icon {
+    margin-right: 5px;
 }
