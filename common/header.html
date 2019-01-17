@@ -67,10 +67,12 @@ function categoryIconsRenderer(category, opts) {
 	let categoryThemeItem = categoryThemeList.find((str) => str.indexOf(category.slug) > -1);
 	if (categoryThemeItem) {
 		let iconItem = categoryThemeItem.split(',');
-		let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
-		let itemIcon = iconItem[1] != '' ? iconHTML(iconItem[1]) : "";
-
-	    html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+		// Ensure exact match
+		if(iconItem[0] == category.slug) {
+			let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
+			let itemIcon = iconItem[1] != '' ? iconHTML(iconItem[1]) : "";
+			html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+		}
 	}
 	/// End custom category icon 
 
