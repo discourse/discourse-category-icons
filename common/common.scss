@@ -18,14 +18,15 @@ span.category-badge-icon {
   }
 }
 
-.categories-list .category-box-heading h3 {
-  .d-icon {
-    margin: 0;
-    &:not(.d-icon-lock) {
-      color: inherit;
-    }
+.categories-list .category-box-heading h3,
+.category-list .category h3 {
+  .d-icon:not(.d-icon-lock) {
+    color: inherit;
   }
   div {
     display: inline;
+  }
+  .category-icon-widget {
+    vertical-align: baseline;
   }
 }
