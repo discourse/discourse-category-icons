@@ -1,12 +1,31 @@
 span.category-badge-icon {
-	display: inline-flex;
-	align-self: center;
-	.d-icon {
-	    opacity: 1;
-	    font-size: 1.3em;
-	}
+  display: inline-flex;
+  align-self: center;
+  .d-icon {
+    opacity: 1;
+    font-size: 1.3em;
+  }
 }
 
-.badge-wrapper .badge-category .d-icon {
+.categories .category h3,
+.badge-wrapper .badge-category {
+  display: inline-flex;
+  .d-icon {
     margin-right: 5px;
+    &:not(.d-icon-lock) {
+      color: inherit;
+    }
+  }
+}
+
+.categories-list .category-box-heading h3 {
+  .d-icon {
+    margin: 0;
+    &:not(.d-icon-lock) {
+      color: inherit;
+    }
+  }
+  div {
+    display: inline;
+  }
 }
