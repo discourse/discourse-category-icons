@@ -1,99 +1,123 @@
 <script type="text/discourse-plugin" version="0.8.26">
-let categoryThemeList = settings.category_icon_list.split('|');
-let lockIcon = settings.category_lock_icon || 'lock';
+  let categoryThemeList = settings.category_icon_list.split('|');
+  let lockIcon = settings.category_lock_icon || 'lock';
 
-const { iconHTML } = require("discourse-common/lib/icon-library");
-const { isRTL } = require("discourse/lib/text-direction");
+  const { iconHTML, iconNode } = require("discourse-common/lib/icon-library");
+  const { isRTL } = require("discourse/lib/text-direction");
+  const { h } = require("virtual-dom");
 
-var get = Em.get,
-  escapeExpression = Handlebars.Utils.escapeExpression;
+  var get = Em.get,
+    escapeExpression = Handlebars.Utils.escapeExpression;
 
-function categoryStripe(color, classes) {
-  var style = color ? "style='background-color: #" + color + ";'" : "";
-  return "<span class='" + classes + "' " + style + "></span>";
-}
+  function categoryStripe(color, classes) {
+    var style = color ? "style='background-color: #" + color + ";'" : "";
+    return "<span class='" + classes + "' " + style + "></span>";
+  }
 
-function categoryIconsRenderer(category, opts) {
-	let description = get(category, "description_text");
-	let restricted = get(category, "read_restricted");
-	let url = opts.url
-	  ? opts.url
-	  : Discourse.getURL("/c/") + Discourse.Category.slugFor(category);
-	let href = opts.link === false ? "" : url;
-	let tagName = opts.link === false || opts.link === "false" ? "span" : "a";
-	let extraClasses = opts.extraClasses ? " " + opts.extraClasses : "";
-	let color = get(category, "color");
-	let html = "";
-	let parentCat = null;
-	let categoryDir = "";
+  function getIconItem(categorySlug) {
+    let categoryThemeItem = categoryThemeList.find((str) => str.indexOf(categorySlug) > -1);
+    if (categoryThemeItem) {
+      let iconItem = categoryThemeItem.split(',');
+      // Ensure exact match
+      if(iconItem[0] === categorySlug) {
+        return iconItem;
+      }
+    }
+  }
 
-	if (!opts.hideParent) {
-	  parentCat = Discourse.Category.findById(
-	    get(category, "parent_category_id")
-	  );
-	}
+  function categoryIconsRenderer(category, opts) {
+    let description = get(category, "description_text");
+    let restricted = get(category, "read_restricted");
+    let url = opts.url
+      ? opts.url
+      : Discourse.getURL("/c/") + Discourse.Category.slugFor(category);
+    let href = opts.link === false ? "" : url;
+    let tagName = opts.link === false || opts.link === "false" ? "span" : "a";
+    let extraClasses = opts.extraClasses ? " " + opts.extraClasses : "";
+    let color = get(category, "color");
+    let html = "";
+    let parentCat = null;
+    let categoryDir = "";
 
-	const categoryStyle =
-	  opts.categoryStyle || Discourse.SiteSettings.category_style;
-	if (categoryStyle !== "none") {
-	  if (parentCat && parentCat !== category) {
-	    html += categoryStripe(
-	      get(parentCat, "color"),
-	      "badge-category-parent-bg"
-	    );
-	  }
-	  html += categoryStripe(color, "badge-category-bg");
-	}
+    if (!opts.hideParent) {
+      parentCat = Discourse.Category.findById(
+        get(category, "parent_category_id")
+      );
+    }
 
-	let classNames = "badge-category clear-badge";
-	if (restricted) {
-	  classNames += " restricted";
-	}
+    const categoryStyle =
+      opts.categoryStyle || Discourse.SiteSettings.category_style;
+    if (categoryStyle !== "none") {
+      if (parentCat && parentCat !== category) {
+        html += categoryStripe(
+          get(parentCat, "color"),
+          "badge-category-parent-bg"
+        );
+      }
+      html += categoryStripe(color, "badge-category-bg");
+    }
 
-	let style = "";
-	if (categoryStyle === "box") {
-	  style = `style="color: #${get(category, "text_color")};"`;
-	}
+    let classNames = "badge-category clear-badge";
+    if (restricted) {
+      classNames += " restricted";
+    }
 
-	html +=
-	  `<span ${style} ` +
-	  'data-drop-close="true" class="' +
-	  classNames +
-	  '"' +
-	  (description ? 'title="' + escapeExpression(description) + '" ' : "") +
-	  ">";
+    let style = "";
+    if (categoryStyle === "box") {
+      style = `style="color: #${get(category, "text_color")};"`;
+    }
 
-	/// Add custom category icon from theme settings
-	let categoryThemeItem = categoryThemeList.find((str) => str.indexOf(category.slug) > -1);
-	if (categoryThemeItem) {
-		let iconItem = categoryThemeItem.split(',');
-		// Ensure exact match
-		if(iconItem[0] == category.slug) {
-			let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
-			let itemIcon = iconItem[1] != '' ? iconHTML(iconItem[1]) : "";
-			html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
-		}
-	}
-	/// End custom category icon 
+    html +=
+      `<span ${style} ` +
+      'data-drop-close="true" class="' +
+      classNames +
+      '"' +
+      (description ? 'title="' + escapeExpression(description) + '" ' : "") +
+      ">";
 
-	let categoryName = escapeExpression(get(category, "name"));
+    /// Add custom category icon from theme settings
+    let iconItem = getIconItem(category.slug);
+    if(iconItem) {
+      let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
+      let itemIcon = iconItem[1] != '' ? iconHTML(iconItem[1]) : "";
+      html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+    }
+    /// End custom category icon 
 
-	if (Discourse.SiteSettings.support_mixed_text_direction) {
-	  categoryDir = isRTL(categoryName) ? 'dir="rtl"' : 'dir="ltr"';
-	}
+    let categoryName = escapeExpression(get(category, "name"));
 
-	if (restricted) {
-	  html += iconHTML(lockIcon);
-	}
-	html += `<span class="category-name" ${categoryDir}>${categoryName}</span></span>`;
+    if (Discourse.SiteSettings.support_mixed_text_direction) {
+      categoryDir = isRTL(categoryName) ? 'dir="rtl"' : 'dir="ltr"';
+    }
 
-	if (href) {
-	  href = ` href="${href}" `;
-	}
+    if (restricted) {
+      html += iconHTML(lockIcon);
+    }
+    html += `<span class="category-name" ${categoryDir}>${categoryName}</span></span>`;
 
-	extraClasses = categoryStyle ? categoryStyle + extraClasses : extraClasses;
-	return `<${tagName} class="badge-wrapper ${extraClasses}" ${href}>${html}</${tagName}>`;
-};
+    if (href) {
+      href = ` href="${href}" `;
+    }
 
-api.replaceCategoryLinkRenderer(categoryIconsRenderer);
+    extraClasses = categoryStyle ? categoryStyle + extraClasses : extraClasses;
+    return `<${tagName} class="badge-wrapper ${extraClasses}" ${href}>${html}</${tagName}>`;
+  };
+
+  api.replaceCategoryLinkRenderer(categoryIconsRenderer);
+
+  api.createWidget("category-icon", {
+    tagName: "div.category-icon-widget",
+    html(attrs) {
+      let iconItem = getIconItem(attrs.category.slug);
+      if(iconItem && !attrs.category.parent_category_id) {
+        let itemColor = iconItem[2] ? `color: ${iconItem[2]}` : "";
+        let itemIcon = iconItem[1] != '' ? iconNode(iconItem[1]) : "";
+        return h("span.category-icon", { "style": itemColor }, itemIcon);
+      }
+    }
+  });
+</script>
+
+<script type="text/x-handlebars" data-template-name="/connectors/category-title-before/category-icon-template">
+  {{mount-widget widget="category-icon" args=(hash category=category)}}
 </script>
