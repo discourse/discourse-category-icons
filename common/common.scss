@@ -9,7 +9,6 @@ span.category-badge-icon {
 
 .categories .category h3,
 .badge-wrapper .badge-category {
-  display: inline-flex;
   .d-icon {
     margin-right: 5px;
     &:not(.d-icon-lock) {
@@ -23,10 +22,15 @@ span.category-badge-icon {
   .d-icon:not(.d-icon-lock) {
     color: inherit;
   }
-  div {
-    display: inline;
-  }
   .category-icon-widget {
     vertical-align: baseline;
   }
+}
+
+.categories-list .category-box-heading h3 div {
+  display: inline;
+}
+
+.category-list .category h3 > div {
+  float: left;
 }
