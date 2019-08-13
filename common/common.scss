@@ -31,6 +31,15 @@ span.category-badge-icon {
   display: inline;
 }
 
-.category-list .category h3 > div {
-  float: left;
+.category-list {
+  .category h3 > div {
+    float: left;
+  }
+  .category-logo {
+    clear: both;
+  }
+}
+
+.mobile-view .category-title-link .category-name {
+  width: 80vw;
 }
