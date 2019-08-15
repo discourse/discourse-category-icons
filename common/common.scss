@@ -7,39 +7,15 @@ span.category-badge-icon {
   }
 }
 
-.categories .category h3,
-.badge-wrapper .badge-category {
-  .d-icon {
-    margin-right: 5px;
-    &:not(.d-icon-lock) {
-      color: inherit;
-    }
-  }
+.categories-list .category h3 .d-icon,
+.badge-wrapper .badge-category .d-icon {
+  margin-right: 5px;
 }
 
-.categories-list .category-box-heading h3,
-.category-list .category h3 {
-  .d-icon:not(.d-icon-lock) {
-    color: inherit;
-  }
-  .category-icon-widget {
-    vertical-align: baseline;
-  }
+.categories-list .category .category-icon .d-icon {
+  color: inherit;
 }
 
 .categories-list .category-box-heading h3 div {
   display: inline;
-}
-
-.category-list {
-  .category h3 > div {
-    float: left;
-  }
-  .category-logo {
-    clear: both;
-  }
-}
-
-.mobile-view .category-title-link .category-name {
-  width: 80vw;
 }
