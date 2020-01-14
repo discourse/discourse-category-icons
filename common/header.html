@@ -1,4 +1,5 @@
 <script type="text/discourse-plugin" version="0.8.26">
+// modified RCO Jan 2019 to allow partial match on category-slug
   let categoryThemeList = settings.category_icon_list.split('|');
   let lockIcon = settings.category_lock_icon || 'lock';
 
@@ -15,14 +16,19 @@
   }
 
   function getIconItem(categorySlug) {
-    let categoryThemeItem = categoryThemeList.find((str) => str.indexOf(categorySlug) > -1);
+  	// return nothing if categorySlug not specified
+  	if (!categorySlug) return;
+    let categoryThemeItem = categoryThemeList.find((str) => 
+    	str.indexOf(",") > -1 ? categorySlug.indexOf(str.substr(0,str.indexOf(","))) > -1 : '');
     if (categoryThemeItem) {
-      let iconItem = categoryThemeItem.split(',');
-      // Ensure exact match
-      if(iconItem[0] === categorySlug) {
-        return iconItem;
-      }
-    }
+    	let iconItem = categoryThemeItem.split(',');
+    	// Test partial/exact match
+        if(iconItem[3]=='partial') {
+            return iconItem;
+        } else if(iconItem[0] === categorySlug) {
+            return iconItem;
+        }
+	}
   }
 
   function categoryIconsRenderer(category, opts) {

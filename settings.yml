@@ -1,7 +1,7 @@
 category_icon_list: 
-  default: 'help,question-circle,#CC0000|'
+  default: 'help,question-circle,#CC0000,partial|'
   type: 'list'
-  description: 'Enter comma-delimited configuration for categories, in the format "category-slug,icon,color".'
+  description: 'Enter comma-delimited configuration for categories, in the format "slug,icon,colour,match". If  match is "partial" then the slug need only partially match the category-slug, otherwise an exact match is required'
 svg_icons: 
   default: 'question-circle'
   type: 'list'
