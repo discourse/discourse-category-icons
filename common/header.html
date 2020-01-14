@@ -1,5 +1,5 @@
 <script type="text/discourse-plugin" version="0.8.26">
-// modified RCO Jan 2019 to allow partial match on category-slug
+  const Category = require("discourse/models/category").default;
   let categoryThemeList = settings.category_icon_list.split('|');
   let lockIcon = settings.category_lock_icon || 'lock';
 
@@ -18,7 +18,7 @@
   function getIconItem(categorySlug) {
   	// return nothing if categorySlug not specified
   	if (!categorySlug) return;
-    let categoryThemeItem = categoryThemeList.find((str) => 
+    let categoryThemeItem = categoryThemeList.find((str) =>
     	str.indexOf(",") > -1 ? categorySlug.indexOf(str.substr(0,str.indexOf(","))) > -1 : '');
     if (categoryThemeItem) {
     	let iconItem = categoryThemeItem.split(',');
@@ -36,7 +36,7 @@
     let restricted = get(category, "read_restricted");
     let url = opts.url
       ? opts.url
-      : Discourse.getURL("/c/") + Discourse.Category.slugFor(category);
+      : Discourse.getURL("/c/") + Category.slugFor(category);
     let href = opts.link === false ? "" : url;
     let tagName = opts.link === false || opts.link === "false" ? "span" : "a";
     let extraClasses = opts.extraClasses ? " " + opts.extraClasses : "";
@@ -46,7 +46,7 @@
     let categoryDir = "";
 
     if (!opts.hideParent) {
-      parentCat = Discourse.Category.findById(
+      parentCat = Category.findById(
         get(category, "parent_category_id")
       );
     }
@@ -88,7 +88,7 @@
       let itemIcon = iconItem[1] != '' ? iconHTML(iconItem[1]) : "";
       html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
     }
-    /// End custom category icon 
+    /// End custom category icon
 
     let categoryName = escapeExpression(get(category, "name"));
 
