@@ -8,8 +8,10 @@ span.category-badge-icon {
 }
 
 .categories-list .category h3 .d-icon,
-.badge-wrapper .badge-category .d-icon {
+.badge-wrapper .badge-category .d-icon,
+.select-kit .select-kit-header .selected-name .name .badge-wrapper .d-icon {
   margin-right: 5px;
+  margin-left: 0px;
 }
 
 .categories-list .category .category-icon .d-icon {
