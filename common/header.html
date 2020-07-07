@@ -6,6 +6,7 @@
   const { iconHTML, iconNode } = require("discourse-common/lib/icon-library");
   const { isRTL } = require("discourse/lib/text-direction");
   const { h } = require("virtual-dom");
+  const getURL = require('discourse-common/lib/get-url').default;
 
   var get = Em.get,
     escapeExpression = Handlebars.Utils.escapeExpression;
@@ -36,7 +37,7 @@
     let restricted = get(category, "read_restricted");
     let url = opts.url
       ? opts.url
-      : Discourse.getURL("/c/") + Category.slugFor(category);
+      : getURL("/c/") + Category.slugFor(category);
     let href = opts.link === false ? "" : url;
     let tagName = opts.link === false || opts.link === "false" ? "span" : "a";
     let extraClasses = opts.extraClasses ? " " + opts.extraClasses : "";
