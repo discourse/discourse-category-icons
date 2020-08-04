@@ -1,8 +1,8 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import Category from "discourse/models/category";
-
+import { helperContext } from "discourse-common/lib/helpers";
 import { iconHTML, iconNode } from "discourse-common/lib/icon-library";
-import isRTL from "discourse/lib/text-direction";
+import { isRTL } from "discourse/lib/text-direction";
 import { h } from "virtual-dom";
 import getURL from "discourse-common/lib/get-url";
 
@@ -41,6 +41,7 @@ export default {
       }
 
       function categoryIconsRenderer(category, opts) {
+        let siteSettings = helperContext().siteSettings;
         let description = get(category, "description_text");
         let restricted = get(category, "read_restricted");
         let url = opts.url
@@ -59,8 +60,7 @@ export default {
           parentCat = Category.findById(get(category, "parent_category_id"));
         }
 
-        const categoryStyle =
-          opts.categoryStyle || Discourse.SiteSettings.category_style;
+        const categoryStyle = opts.categoryStyle || siteSettings.category_style;
         if (categoryStyle !== "none") {
           if (parentCat && parentCat !== category) {
             html += categoryStripe(
@@ -102,7 +102,7 @@ export default {
 
         let categoryName = escapeExpression(get(category, "name"));
 
-        if (Discourse.SiteSettings.support_mixed_text_direction) {
+        if (siteSettings.support_mixed_text_direction) {
           categoryDir = isRTL(categoryName) ? 'dir="rtl"' : 'dir="ltr"';
         }
 
