@@ -5,6 +5,7 @@ import { iconHTML, iconNode } from "discourse-common/lib/icon-library";
 import { isRTL } from "discourse/lib/text-direction";
 import { h } from "virtual-dom";
 import getURL from "discourse-common/lib/get-url";
+import categoryTitleLink from "discourse/components/category-title-link";
 
 export default {
   name: "category-icons",
@@ -13,6 +14,11 @@ export default {
     withPluginApi("0.8.26", (api) => {
       let categoryThemeList = settings.category_icon_list.split("|");
       let lockIcon = settings.category_lock_icon || "lock";
+
+      categoryTitleLink.reopen({
+        lockIcon: lockIcon,
+      });
+
       var get = Em.get,
         escapeExpression = Handlebars.Utils.escapeExpression;
 
