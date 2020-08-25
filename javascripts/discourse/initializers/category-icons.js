@@ -133,7 +133,7 @@ export default {
         tagName: "div.category-icon-widget",
         html(attrs) {
           let iconItem = getIconItem(attrs.category.slug);
-          if (iconItem && !attrs.category.parent_category_id) {
+          if (iconItem) {
             let itemColor = iconItem[2] ? `color: ${iconItem[2]}` : "";
             let itemIcon = iconItem[1] != "" ? iconNode(iconItem[1]) : "";
             return h("span.category-icon", { style: itemColor }, itemIcon);
