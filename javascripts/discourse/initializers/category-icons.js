@@ -7,6 +7,8 @@ import { h } from "virtual-dom";
 import getURL from "discourse-common/lib/get-url";
 import categoryTitleLink from "discourse/components/category-title-link";
 import I18n from "I18n";
+import { get } from "@ember/object";
+import { escapeExpression } from "discourse/lib/utilities";
 
 export default {
   name: "category-icons",
@@ -19,9 +21,6 @@ export default {
       categoryTitleLink.reopen({
         lockIcon: lockIcon,
       });
-
-      var get = Em.get,
-        escapeExpression = Handlebars.Utils.escapeExpression;
 
       function categoryStripe(color, classes) {
         var style = color ? "style='background-color: #" + color + ";'" : "";
