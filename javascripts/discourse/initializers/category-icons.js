@@ -6,6 +6,7 @@ import { isRTL } from "discourse/lib/text-direction";
 import { h } from "virtual-dom";
 import getURL from "discourse-common/lib/get-url";
 import categoryTitleLink from "discourse/components/category-title-link";
+import I18n from "I18n";
 
 export default {
   name: "category-icons",
@@ -44,6 +45,13 @@ export default {
             return iconItem;
           }
         }
+      }
+
+      function buildTopicCount(count) {
+        return `<span class="topic-count" aria-label="${I18n.t(
+          "category_row.topic_count",
+          { count }
+        )}">&times; ${count}</span>`;
       }
 
       function categoryIconsRenderer(category, opts) {
@@ -117,6 +125,10 @@ export default {
         }
         html += `<span class="category-name" ${categoryDir}>${categoryName}</span></span>`;
 
+        if (opts.topicCount && categoryStyle !== "box") {
+          html += buildTopicCount(opts.topicCount);
+        }
+
         if (href) {
           href = ` href="${href}" `;
         }
@@ -124,7 +136,12 @@ export default {
         extraClasses = categoryStyle
           ? categoryStyle + extraClasses
           : extraClasses;
-        return `<${tagName} class="badge-wrapper ${extraClasses}" ${href}>${html}</${tagName}>`;
+
+        let afterBadgeWrapper = "";
+        if (opts.topicCount && categoryStyle === "box") {
+          afterBadgeWrapper += buildTopicCount(opts.topicCount);
+        }
+        return `<${tagName} class="badge-wrapper ${extraClasses}" ${href}>${html}</${tagName}>${afterBadgeWrapper}`;
       }
 
       api.replaceCategoryLinkRenderer(categoryIconsRenderer);
