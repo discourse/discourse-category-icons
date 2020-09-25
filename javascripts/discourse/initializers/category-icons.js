@@ -107,7 +107,8 @@ export default {
         /// Add custom category icon from theme settings
         let iconItem = getIconItem(category.slug);
         if (iconItem) {
-          let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
+        let itemColor = iconItem[2] == 'catcol' ? `style="color: #${color}"` : iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
+        ///  let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
           let itemIcon = iconItem[1] != "" ? iconHTML(iconItem[1]) : "";
           html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
         }
