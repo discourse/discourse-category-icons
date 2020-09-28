@@ -108,9 +108,8 @@ export default {
         let iconItem = getIconItem(category.slug);
         if (iconItem) {
         let itemColor = iconItem[2] == 'categoryColour' ? `style="color: #${color}"` : iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
-        ///  let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
-          let itemIcon = iconItem[1] != "" ? iconHTML(iconItem[1]) : "";
-          html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+			let itemIcon = iconItem[1] != "" ? iconHTML(iconItem[1]) : "";
+			html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
         }
         /// End custom category icon
 
