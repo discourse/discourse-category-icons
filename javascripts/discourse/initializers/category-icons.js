@@ -108,7 +108,7 @@ export default {
         let iconItem = getIconItem(category.slug);
         if (iconItem) {
           let itemColor = iconItem[2]
-            ? iconItem[2] == "categoryColour"
+            ? iconItem[2].match(/categoryColo(u*)r/)
               ? `style="color: #${color}"`
               : `style="color: ${iconItem[2]}"`
             : "";
@@ -154,7 +154,11 @@ export default {
         html(attrs) {
           let iconItem = getIconItem(attrs.category.slug);
           if (iconItem) {
-            let itemColor = iconItem[2] ? `color: ${iconItem[2]}` : "";
+            let itemColor = iconItem[2]
+              ? iconItem[2].match(/categoryColo(u*)r/g)
+                ? `color: #${attrs.category.color}`
+                : `color: ${iconItem[2]}`
+              : "";
             let itemIcon = iconItem[1] != "" ? iconNode(iconItem[1]) : "";
             return h("span.category-icon", { style: itemColor }, itemIcon);
           }
