@@ -1,6 +1,6 @@
 {
   "name": "Category Icons",
-  "about_url": "https://github.com/pmusaraj/discourse-category-icons",
-  "license_url": "https://github.com/pmusaraj/discourse-category-icons/blob/master/LICENSE",
-  "component": "true"
+  "about_url": "https://github.com/discourse/discourse-category-icons",
+  "license_url": "https://github.com/discourse/discourse-category-icons/blob/main/LICENSE",
+  "component": true
 }
