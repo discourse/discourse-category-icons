@@ -6,6 +6,8 @@ import { isRTL } from "discourse/lib/text-direction";
 import { h } from "virtual-dom";
 import getURL from "discourse-common/lib/get-url";
 import categoryTitleLink from "discourse/components/category-title-link";
+import categoriesBoxes from "discourse/components/categories-boxes";
+import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
 import I18n from "I18n";
 import { get } from "@ember/object";
 import { escapeExpression } from "discourse/lib/utilities";
@@ -19,6 +21,14 @@ export default {
       let lockIcon = settings.category_lock_icon || "lock";
 
       categoryTitleLink.reopen({
+        lockIcon: lockIcon,
+      });
+
+      categoriesBoxes.reopen({
+        lockIcon: lockIcon,
+      });
+
+      categoriesBoxesWithTopics.reopen({
         lockIcon: lockIcon,
       });
 
