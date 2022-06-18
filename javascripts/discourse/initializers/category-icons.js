@@ -38,7 +38,9 @@ export default {
       }
 
       function getIconItem(categorySlug) {
-        if (!categorySlug) {return;}
+        if (!categorySlug) {
+          return;
+        }
 
         let categoryThemeItem = categoryThemeList.find((str) =>
           str.indexOf(",") > -1
