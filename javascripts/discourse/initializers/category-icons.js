@@ -21,24 +21,26 @@ export default {
       let lockIcon = settings.category_lock_icon || "lock";
 
       categoryTitleLink.reopen({
-        lockIcon: lockIcon,
+        lockIcon,
       });
 
       categoriesBoxes.reopen({
-        lockIcon: lockIcon,
+        lockIcon,
       });
 
       categoriesBoxesWithTopics.reopen({
-        lockIcon: lockIcon,
+        lockIcon,
       });
 
       function categoryStripe(color, classes) {
-        var style = color ? "style='background-color: #" + color + ";'" : "";
+        let style = color ? "style='background-color: #" + color + ";'" : "";
         return "<span class='" + classes + "' " + style + "></span>";
       }
 
       function getIconItem(categorySlug) {
-        if (!categorySlug) return;
+        if (!categorySlug) {
+          return;
+        }
 
         let categoryThemeItem = categoryThemeList.find((str) =>
           str.indexOf(",") > -1
@@ -48,7 +50,7 @@ export default {
         if (categoryThemeItem) {
           let iconItem = categoryThemeItem.split(",");
           // Test partial/exact match
-          if (iconItem[3] == "partial") {
+          if (iconItem[3] === "partial") {
             return iconItem;
           } else if (iconItem[0] === categorySlug) {
             return iconItem;
@@ -122,7 +124,7 @@ export default {
               ? `style="color: #${color}"`
               : `style="color: ${iconItem[2]}"`
             : "";
-          let itemIcon = iconItem[1] != "" ? iconHTML(iconItem[1]) : "";
+          let itemIcon = iconItem[1] !== "" ? iconHTML(iconItem[1]) : "";
           html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
         }
         /// End custom category icon
@@ -169,7 +171,7 @@ export default {
                 ? `color: #${attrs.category.color}`
                 : `color: ${iconItem[2]}`
               : "";
-            let itemIcon = iconItem[1] != "" ? iconNode(iconItem[1]) : "";
+            let itemIcon = iconItem[1] !== "" ? iconNode(iconItem[1]) : "";
             return h("span.category-icon", { style: itemColor }, itemIcon);
           }
         },
