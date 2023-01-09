@@ -11,12 +11,14 @@ import categoriesBoxesWithTopics from "discourse/components/categories-boxes-wit
 import I18n from "I18n";
 import { get } from "@ember/object";
 import { escapeExpression } from "discourse/lib/utilities";
+import { emojiBasePath } from "discourse/lib/settings";
 
 export default {
   name: "category-icons",
 
   initialize() {
     withPluginApi("0.8.26", (api) => {
+      let useCategoryLogo = settings.use_category_logo;
       let categoryThemeList = settings.category_icon_list.split("|");
       let lockIcon = settings.category_lock_icon || "lock";
 
@@ -80,6 +82,7 @@ export default {
         let html = "";
         let parentCat = null;
         let categoryDir = "";
+        let categoryLogo = get(category, "uploaded_logo");
 
         if (!opts.hideParent) {
           parentCat = Category.findById(get(category, "parent_category_id"));
@@ -116,18 +119,38 @@ export default {
             : "") +
           ">";
 
-        /// Add custom category icon from theme settings
-        let iconItem = getIconItem(category.slug);
-        if (iconItem) {
-          let itemColor = iconItem[2]
-            ? iconItem[2].match(/categoryColo(u*)r/)
-              ? `style="color: #${color}"`
-              : `style="color: ${iconItem[2]}"`
-            : "";
-          let itemIcon = iconItem[1] !== "" ? iconHTML(iconItem[1]) : "";
-          html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+        if (!useCategoryLogo) {
+          /// Add custom category icon from theme settings
+          let iconItem = getIconItem(category.slug);
+          if (iconItem) {
+            let itemColor = iconItem[2]
+              ? `style="color: ${iconItem[2]}"`
+              : `style="color: #${color}"`;
+            // check if native emoji
+            const emojiSet = helperContext().siteSettings.emoji_set;
+            let itemIcon = /\p{Extended_Pictographic}/u.test(iconItem[1])
+              ? iconItem[1]
+              : // check if hosted emoji
+              iconItem[1].charAt(0) == ":"
+              ? `<img class="category-badge-icon__emoji" src="` +
+                getURL(
+                  `${emojiBasePath()}/${emojiSet}/${iconItem[1]
+                    .replace(/:t/, "/")
+                    .replace(/:/g, "")}.png`
+                ) +
+                `" />`
+              : iconItem[1] !== "" &&
+                /\p{Extended_Pictographic}/u.test(iconItem[1]) === false
+              ? iconHTML(iconItem[1])
+              : "";
+            html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+            /// End custom category icon
+          }
+        } else if (categoryLogo) {
+          html += `<span class="category-badge-logo"><img src="${categoryLogo.url}" /></span>`;
         }
-        /// End custom category icon
+
+        // Add category logo from theme settings
 
         let categoryName = escapeExpression(get(category, "name"));
 

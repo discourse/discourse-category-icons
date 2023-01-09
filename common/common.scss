@@ -1,17 +1,49 @@
 span.category-badge-icon {
   display: inline-flex;
   align-self: center;
+  font-size: var(--font-up-2);
+  &:hover {
+    text-decoration: none;
+  }
   .d-icon {
     opacity: 1;
-    font-size: 1.3em;
+    font-size: var(--font-0);
   }
 }
 
-.categories-list .category h3 .d-icon,
-.badge-wrapper .badge-category .d-icon,
-.select-kit .select-kit-header .selected-name .name .badge-wrapper .d-icon {
-  margin-right: 5px;
-  margin-left: 0px;
+.category-badge-icon__emoji {
+  max-width: 1.25em;
+  max-height: 1.25em;
+}
+
+span.category-badge-logo {
+  img {
+    max-width: 2.25em;
+    max-height: 2.25em;
+  }
+  margin-right: 0.375em;
+}
+
+a.badge-wrapper {
+  &:hover {
+    .category-badge-icon {
+      text-decoration: none;
+    }
+  }
+}
+
+.badge-wrapper .badge-category {
+  align-items: center;
+}
+
+.badge-wrapper .badge-category {
+  .category-badge-icon {
+    margin-right: 5px;
+    margin-left: 0px;
+    .d-icon {
+      margin-right: 0;
+    }
+  }
 }
 
 .badge-wrapper.bullet span.category-badge-icon .d-icon,
