@@ -3,14 +3,6 @@ category_icon_list:
   type: "list"
   list_type: "simple"
   description: '  Enter comma-delimited configuration for categories<br>Format: "slug,icon,color,partial"<br>slug — The category slug.<br>icon — Can be either (1) Font Awesome icon, (2) a singular unicode character "😀", or (3) a forum emoji formatted like ":grinning:"<br>color (optional) — Color for the icon. Only works for Font Awesome, not emojis. Use a hex code with the "#" character. Default color is the category/badge color.<br>partial (optional) — Write "partial" if the slug only need only partially match the category-slug, otherwise an exact match is required. Useful for subcategories with identical names.'
-svg_icons:
-  default: "question-circle"
-  type: "list"
-  list_type: "compact"
-  description: "List of FontAwesome 5 icons used in this theme component"
-category_lock_icon:
-  default: ""
-  description: "Enter the name of a FontAwesome 5 icon to display instead of the lock icon next to private categories."
 use_category_logo:
   type: bool
   default: false
