@@ -83,6 +83,7 @@ export default {
         let parentCat = null;
         let categoryDir = "";
         let categoryLogo = get(category, "uploaded_logo");
+        let categoryColor = get(category, "color");
 
         if (!opts.hideParent) {
           parentCat = Category.findById(get(category, "parent_category_id"));
@@ -123,9 +124,9 @@ export default {
           /// Add custom category icon from theme settings
           let iconItem = getIconItem(category.slug);
           if (iconItem) {
-            let itemColor = iconItem[2]
-              ? `style="color: ${iconItem[2]}"`
-              : `style="color: #${color}"`;
+            // let itemColor = iconItem[2]
+            //   ? `style="color: ${iconItem[2]}"`
+            //   : `style="color: #${color}"`;
             // check if native emoji
             const emojiSet = helperContext().siteSettings.emoji_set;
             let itemIcon = /\p{Extended_Pictographic}/u.test(iconItem[1])
@@ -143,7 +144,7 @@ export default {
                 /\p{Extended_Pictographic}/u.test(iconItem[1]) === false
               ? iconHTML(iconItem[1])
               : "";
-            html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+            html += `<span style="--category-color: #${categoryColor}" class="category-badge-icon">${itemIcon}</span>`;
             /// End custom category icon
           }
         } else if (categoryLogo) {
