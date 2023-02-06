@@ -124,34 +124,41 @@ export default {
           /// Add custom category icon from theme settings
           let iconItem = getIconItem(category.slug);
           if (iconItem) {
-            // let itemColor = iconItem[2]
-            //   ? `style="color: ${iconItem[2]}"`
-            //   : `style="color: #${color}"`;
+            let itemColor = iconItem[2]
+              ? iconItem[2].match(/categoryColo(u*)r/)
+                ? `color: #${color};`
+                : `color: ${iconItem[2]};`
+              : "";
             // check if native emoji
             const emojiSet = helperContext().siteSettings.emoji_set;
             let itemIcon = /\p{Extended_Pictographic}/u.test(iconItem[1])
               ? iconItem[1]
               : // check if hosted emoji
               iconItem[1].charAt(0) == ":"
-              ? `<img class="category-badge-icon__emoji" src="` +
+              ? `<img src="` +
                 getURL(
                   `${emojiBasePath()}/${emojiSet}/${iconItem[1]
                     .replace(/:t/, "/")
                     .replace(/:/g, "")}.png`
                 ) +
                 `" />`
-              : iconItem[1] !== "" &&
-                /\p{Extended_Pictographic}/u.test(iconItem[1]) === false
+              : iconItem[1] !== ""
               ? iconHTML(iconItem[1])
               : "";
-            html += `<span style="--category-color: #${categoryColor}" class="category-badge-icon">${itemIcon}</span>`;
+            let emojiClass = "";
+            if (
+              /\p{Extended_Pictographic}/u.test(iconItem[1]) ||
+              iconItem[1].charAt(0) == ":"
+            ) {
+              emojiClass = `category-badge-icon__emoji`;
+            }
+            html += `<span style="${itemColor} --category-color: #${categoryColor}" class="category-badge-icon ${emojiClass}">${itemIcon}</span>`;
             /// End custom category icon
           }
+          // Add category logo from theme settings
         } else if (categoryLogo) {
           html += `<span class="category-badge-logo"><img src="${categoryLogo.url}" /></span>`;
         }
-
-        // Add category logo from theme settings
 
         let categoryName = escapeExpression(get(category, "name"));
 
@@ -195,7 +202,14 @@ export default {
                 ? `color: #${attrs.category.color}`
                 : `color: ${iconItem[2]}`
               : "";
-            let itemIcon = iconItem[1] !== "" ? iconNode(iconItem[1]) : "";
+            let itemIcon = /\p{Extended_Pictographic}/u.test(iconItem[1])
+              ? ""
+              : iconItem[1].charAt(0) == ":"
+              ? ""
+              : iconItem[1] !== ""
+              ? iconNode(iconItem[1])
+              : "";
+
             return h("span.category-icon", { style: itemColor }, itemIcon);
           }
         },
