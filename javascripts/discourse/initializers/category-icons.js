@@ -134,7 +134,7 @@ export default {
             let itemIcon = /\p{Extended_Pictographic}/u.test(iconItem[1])
               ? iconItem[1]
               : // check if hosted emoji
-              iconItem[1].charAt(0) == ":"
+              iconItem[1].charAt(0) === ":"
               ? `<img src="` +
                 getURL(
                   `${emojiBasePath()}/${emojiSet}/${iconItem[1]
@@ -148,7 +148,7 @@ export default {
             let emojiClass = "";
             if (
               /\p{Extended_Pictographic}/u.test(iconItem[1]) ||
-              iconItem[1].charAt(0) == ":"
+              iconItem[1].charAt(0) === ":"
             ) {
               emojiClass = `category-badge-icon__emoji`;
             }
@@ -204,7 +204,7 @@ export default {
               : "";
             let itemIcon = /\p{Extended_Pictographic}/u.test(iconItem[1])
               ? ""
-              : iconItem[1].charAt(0) == ":"
+              : iconItem[1].charAt(0) === ":"
               ? ""
               : iconItem[1] !== ""
               ? iconNode(iconItem[1])
