@@ -4,6 +4,7 @@ import MountWidget from "discourse/components/mount-widget";
 
 export default class CategoryIcon extends MountWidget {
   widget = "category-icon";
+  classNames = ["category-icon-widget-wrapper"];
 
   buildArgs() {
     return { category: this.category };
