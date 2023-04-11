@@ -8,9 +8,13 @@ import getURL from "discourse-common/lib/get-url";
 import categoryTitleLink from "discourse/components/category-title-link";
 import categoriesBoxes from "discourse/components/categories-boxes";
 import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
+import CategorySectionLink from "discourse/lib/sidebar/user/categories-section/category-section-link";
 import I18n from "I18n";
 import { get } from "@ember/object";
 import { escapeExpression } from "discourse/lib/utilities";
+import { cached } from "@glimmer/tracking";
+
+const PLUGIN_ID = "category-icons";
 
 export default {
   name: "category-icons",
@@ -175,6 +179,53 @@ export default {
             return h("span.category-icon", { style: itemColor }, itemIcon);
           }
         },
+      });
+
+      api.modifyClass("component:sidebar/common/categories-section", {
+        pluginId: PLUGIN_ID,
+
+        @cached
+        get sectionLinks() {
+          return this.sortedCategories.map((category) => {
+            const klass = new CategorySectionLink({
+              category,
+              topicTrackingState: this.topicTrackingState,
+              currentUser: this.currentUser
+            });
+
+            const item = getIconItem(klass.category.slug);
+
+            if (item) {
+              const { prefixType, prefixValue, prefixColor, prefixBadge } = klass;
+
+              const icon = item[1] || prefixValue;
+              let color = item[2] && item[2].match(/categoryColo(u*)r/g) ? prefixColor : item[2];
+              if (color[0] === "#") {
+                color = color.slice(1);
+              }
+
+              Object.defineProperties(klass, Object.getOwnPropertyDescriptors({
+                  get prefixType() {
+                    return icon ? "icon" : prefixType;
+                  },
+                  get prefixValue() {
+                    return icon;
+                  },
+                  get prefixColor() {
+                    return color;
+                  },
+                  get prefixBadge() {
+                    if (prefixBadge) {
+                      return lockIcon;
+                    }
+                  },
+                })
+              );
+            }
+
+            return klass;
+          });
+        }
       });
     });
   },
