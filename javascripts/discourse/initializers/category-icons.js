@@ -190,21 +190,27 @@ export default {
             const klass = new CategorySectionLink({
               category,
               topicTrackingState: this.topicTrackingState,
-              currentUser: this.currentUser
+              currentUser: this.currentUser,
             });
 
             const item = getIconItem(klass.category.slug);
 
             if (item) {
-              const { prefixType, prefixValue, prefixColor, prefixBadge } = klass;
+              const { prefixType, prefixValue, prefixColor, prefixBadge } =
+                klass;
 
               const icon = item[1] || prefixValue;
-              let color = item[2] && item[2].match(/categoryColo(u*)r/g) ? prefixColor : item[2];
+              let color =
+                item[2] && item[2].match(/categoryColo(u*)r/g)
+                  ? prefixColor
+                  : item[2];
               if (color[0] === "#") {
                 color = color.slice(1);
               }
 
-              Object.defineProperties(klass, Object.getOwnPropertyDescriptors({
+              Object.defineProperties(
+                klass,
+                Object.getOwnPropertyDescriptors({
                   get prefixType() {
                     return icon ? "icon" : prefixType;
                   },
@@ -225,7 +231,7 @@ export default {
 
             return klass;
           });
-        }
+        },
       });
     });
   },
