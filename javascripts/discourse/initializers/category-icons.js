@@ -47,6 +47,7 @@ export default {
             ? categorySlug.indexOf(str.substr(0, str.indexOf(","))) > -1
             : ""
         );
+
         if (categoryThemeItem) {
           let iconItem = categoryThemeItem.split(",");
           // Test partial/exact match
@@ -118,6 +119,7 @@ export default {
 
         /// Add custom category icon from theme settings
         let iconItem = getIconItem(category.slug);
+
         if (iconItem) {
           let itemColor = iconItem[2]
             ? iconItem[2].match(/categoryColo(u*)r/)
@@ -176,6 +178,42 @@ export default {
           }
         },
       });
+
+      if (api.registerCustomCategorySectionLinkLockIcon) {
+        api.registerCustomCategorySectionLinkLockIcon(lockIcon);
+      }
+
+      if (api.registerCustomCategorySectionLinkPrefix) {
+        const site = api.container.lookup("service:site");
+
+        categoryThemeList.forEach((str) => {
+          const [slug, icon, color, match] = str.split(",");
+
+          if (slug && icon && color) {
+            const category = site.categories.find((cat) => {
+              if (match === "partial") {
+                return cat.slug.toLowerCase().includes(slug.toLowerCase());
+              } else {
+                return cat.slug.toLowerCase() === slug.toLowerCase();
+              }
+            });
+
+            if (category) {
+              const opts = {
+                categoryId: category.id,
+                prefixType: "icon",
+                prefixValue: icon,
+              };
+
+              if (!color.match(/categoryColo(u*)r/g)) {
+                opts.prefixColor = color.replace(/^#/, "");
+              }
+
+              api.registerCustomCategorySectionLinkPrefix(opts);
+            }
+          }
+        });
+      }
     });
   },
 };
