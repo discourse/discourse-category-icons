@@ -40,7 +40,7 @@ export default {
         let categoryThemeItem = categoryThemeList.find((str) =>
           str.indexOf(",") > -1
             ? categorySlug.indexOf(str.substr(0, str.indexOf(","))) > -1
-            : "",
+            : ""
         );
 
         if (categoryThemeItem) {
@@ -57,7 +57,7 @@ export default {
       function buildTopicCount(count) {
         return `<span class="topic-count" aria-label="${I18n.t(
           "category_row.topic_count",
-          { count },
+          { count }
         )}">&times; ${count}</span>`;
       }
 
