@@ -32,11 +32,6 @@ export default {
         lockIcon,
       });
 
-      function categoryStripe(color, classes) {
-        let style = color ? "style='background-color: #" + color + ";'" : "";
-        return "<span class='" + classes + "' " + style + "></span>";
-      }
-
       function getIconItem(categorySlug) {
         if (!categorySlug) {
           return;
@@ -68,7 +63,7 @@ export default {
 
       function categoryIconsRenderer(category, opts) {
         let siteSettings = helperContext().siteSettings;
-        let description = get(category, "description_text");
+        let descriptionText = get(category, "description_text");
         let restricted = get(category, "read_restricted");
         let url = opts.url
           ? opts.url
@@ -77,57 +72,41 @@ export default {
         let tagName =
           opts.link === false || opts.link === "false" ? "span" : "a";
         let extraClasses = opts.extraClasses ? " " + opts.extraClasses : "";
-        let color = get(category, "color");
         let html = "";
         let parentCat = null;
         let categoryDir = "";
+        let dataAttributes = category
+          ? `data-category-id="${get(category, "id")}"`
+          : "";
+
+        /// Add custom category icon from theme settings
+        let iconItem = getIconItem(category.slug);
 
         if (!opts.hideParent) {
           parentCat = Category.findById(get(category, "parent_category_id"));
         }
 
-        const categoryStyle = opts.categoryStyle || siteSettings.category_style;
-        if (categoryStyle !== "none") {
-          if (parentCat && parentCat !== category) {
-            html += categoryStripe(
-              get(parentCat, "color"),
-              "badge-category-parent-bg"
-            );
-          }
-          html += categoryStripe(color, "badge-category-bg");
-        }
-
-        let classNames = "badge-category clear-badge";
+        let classNames = `badge-category ${iconItem ? "--has-icon" : ""}`;
         if (restricted) {
           classNames += " restricted";
         }
 
-        let style = "";
-        if (categoryStyle === "box") {
-          style = `style="color: #${get(category, "text_color")};"`;
+        if (parentCat) {
+          classNames += ` --has-parent`;
+          dataAttributes += ` data-parent-category-id="${parentCat.id}"`;
         }
 
-        html +=
-          `<span ${style} ` +
-          'data-drop-close="true" class="' +
-          classNames +
-          '"' +
-          (description
-            ? 'title="' + escapeExpression(description) + '" '
-            : "") +
-          ">";
-
-        /// Add custom category icon from theme settings
-        let iconItem = getIconItem(category.slug);
+        html += `<span 
+          ${dataAttributes} 
+          data-drop-close="true" 
+          class="${classNames}" 
+          ${descriptionText ? 'title="' + descriptionText + '" ' : ""}
+        >`;
 
         if (iconItem) {
-          let itemColor = iconItem[2]
-            ? iconItem[2].match(/categoryColo(u*)r/)
-              ? `style="color: #${color}"`
-              : `style="color: ${iconItem[2]}"`
-            : "";
+          let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
           let itemIcon = iconItem[1] !== "" ? iconHTML(iconItem[1]) : "";
-          html += `<span ${itemColor} class="category-badge-icon">${itemIcon}</span>`;
+          html += `<span ${itemColor} class="badge-category__icon">${itemIcon}</span>`;
         }
         /// End custom category icon
 
@@ -140,9 +119,10 @@ export default {
         if (restricted) {
           html += iconHTML(lockIcon);
         }
-        html += `<span class="category-name" ${categoryDir}>${categoryName}</span></span>`;
+        html += `<span class="badge-category__name" ${categoryDir}>${categoryName}</span>`;
+        html += "</span>";
 
-        if (opts.topicCount && categoryStyle !== "box") {
+        if (opts.topicCount) {
           html += buildTopicCount(opts.topicCount);
         }
 
@@ -150,15 +130,16 @@ export default {
           href = ` href="${href}" `;
         }
 
-        extraClasses = categoryStyle
-          ? categoryStyle + extraClasses
-          : extraClasses;
-
         let afterBadgeWrapper = "";
-        if (opts.topicCount && categoryStyle === "box") {
-          afterBadgeWrapper += buildTopicCount(opts.topicCount);
+
+        if (opts.plusSubcategories && opts.lastSubcategory) {
+          afterBadgeWrapper += `<span class="plus-subcategories">
+            ${I18n.t("category_row.plus_subcategories", {
+              count: opts.plusSubcategories,
+            })}
+            </span>`;
         }
-        return `<${tagName} class="badge-wrapper ${extraClasses}" ${href}>${html}</${tagName}>${afterBadgeWrapper}`;
+        return `<${tagName} class="badge-category__wrapper ${extraClasses}" ${href}>${html}</${tagName}>${afterBadgeWrapper}`;
       }
 
       api.replaceCategoryLinkRenderer(categoryIconsRenderer);

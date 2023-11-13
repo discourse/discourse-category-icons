@@ -1,20 +1,25 @@
-span.category-badge-icon {
-  display: inline-flex;
-  align-self: center;
-  .d-icon {
-    opacity: 1;
-    font-size: 1.3em;
+.badge-category.--has-icon {
+  // hide default bullet when icon is set
+  &:before {
+    display: none;
   }
 }
 
-.categories-list .category h3 .d-icon,
-.badge-wrapper .badge-category .d-icon,
-.select-kit .select-kit-header .selected-name .name .badge-wrapper .d-icon {
-  margin-right: 5px;
-  margin-left: 0px;
+.badge-category__icon {
+  display: inline-flex;
+  align-self: center;
+  color: var(--category-badge-color);
+  .d-icon {
+    color: inherit;
+    font-size: var(--font-up-2);
+  }
 }
 
-.badge-wrapper.bullet span.category-badge-icon .d-icon,
+.categories-list .category h3 .d-icon {
+  margin-right: 0.25em;
+  margin-left: 0;
+}
+
 .categories-list .category .category-icon .d-icon {
   color: inherit;
 }
