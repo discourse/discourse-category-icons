@@ -63,7 +63,9 @@ export default {
 
       function categoryIconsRenderer(category, opts) {
         let siteSettings = helperContext().siteSettings;
-        let descriptionText = get(category, "description_text");
+        let descriptionText = escapeExpression(
+          get(category, "description_text")
+        );
         let restricted = get(category, "read_restricted");
         let url = opts.url
           ? opts.url
