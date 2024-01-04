@@ -11,7 +11,3 @@ svg_icons:
 category_lock_icon:
   default: ""
   description: "Enter the name of a FontAwesome 5 icon to display instead of the lock icon next to private categories."
-use_category_logo:
-  type: bool
-  default: false
-  description: "Use the category's uploaded logo as its icon.<br><br><strong>Overrides</strong> Font Awesome icons and emojis.<br><br>Category logos can be uploaded through individual category settings."
