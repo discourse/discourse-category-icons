@@ -1,38 +1,25 @@
-span.category-badge-icon {
-  display: inline; // to prevent varying line heights
+.badge-category.--has-icon {
+  // hide default bullet when icon is set
+  &:before {
+    display: none;
+  }
+}
+
+.badge-category__icon {
+  display: inline-flex;
+  align-self: center;
+  color: var(--category-badge-color);
   .d-icon {
-    opacity: 1;
+    color: inherit;
     font-size: var(--font-up-2);
   }
 }
 
-.category-badge-icon__emoji {
-  width: 1em;
-  font-size: var(--font-up-2);
-  line-height: 0;
-  img {
-    width: 100%;
-    height: auto;
-  }
+.categories-list .category h3 .d-icon {
+  margin-right: 0.25em;
+  margin-left: 0;
 }
 
-// emoji visible when category style set to box
-
-.badge-wrapper.box span .category-badge-icon__emoji {
-  overflow: visible;
-}
-
-.categories-list .category h3,
-.badge-wrapper .badge-category,
-.select-kit .select-kit-header .selected-name .name .badge-wrapper {
-  .d-icon,
-  .category-badge-icon__emoji {
-    margin-right: 5px;
-    margin-left: 0px;
-  }
-}
-
-.badge-wrapper.bullet span.category-badge-icon .d-icon,
 .categories-list .category .category-icon .d-icon {
   color: var(--category-color);
 }
