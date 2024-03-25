@@ -21,7 +21,7 @@
 }
 
 .categories-list .category .category-icon .d-icon {
-  color: inherit;
+  color: var(--category-color);
 }
 
 .categories-list .category-box-heading h3 div {
@@ -30,4 +30,17 @@
 
 .subcategory .category-icon-widget {
   display: none;
+}
+
+// category logo as icon
+
+span.category-badge-logo {
+  img {
+    max-width: 1.5em;
+    width: 100%;
+    height: auto;
+  }
+  height: 0;
+  overflow: visible;
+  margin-right: 0.375em;
 }
