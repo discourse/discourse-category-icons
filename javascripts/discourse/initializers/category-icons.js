@@ -1,16 +1,16 @@
-import { withPluginApi } from "discourse/lib/plugin-api";
-import Category from "discourse/models/category";
-import { helperContext } from "discourse-common/lib/helpers";
-import { iconHTML, iconNode } from "discourse-common/lib/icon-library";
-import { isRTL } from "discourse/lib/text-direction";
+import { get } from "@ember/object";
 import { h } from "virtual-dom";
-import getURL from "discourse-common/lib/get-url";
-import categoryTitleLink from "discourse/components/category-title-link";
 import categoriesBoxes from "discourse/components/categories-boxes";
 import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
-import I18n from "I18n";
-import { get } from "@ember/object";
+import categoryTitleLink from "discourse/components/category-title-link";
+import { withPluginApi } from "discourse/lib/plugin-api";
+import { isRTL } from "discourse/lib/text-direction";
 import { escapeExpression } from "discourse/lib/utilities";
+import Category from "discourse/models/category";
+import getURL from "discourse-common/lib/get-url";
+import { helperContext } from "discourse-common/lib/helpers";
+import { iconHTML, iconNode } from "discourse-common/lib/icon-library";
+import I18n from "I18n";
 
 export default {
   name: "category-icons",

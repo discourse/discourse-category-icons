@@ -1,12 +1,12 @@
+import { visit } from "@ember/test-helpers";
 import { test } from "qunit";
+import Site from "discourse/models/site";
 import {
   acceptance,
   exists,
   query,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
-import { visit } from "@ember/test-helpers";
-import Site from "discourse/models/site";
 
 acceptance("Sidebar - Category icons", function (needs) {
   needs.user();
