@@ -1,82 +1,87 @@
+import { getOwner } from "@ember/owner";
 import { visit } from "@ember/test-helpers";
 import { test } from "qunit";
-import Site from "discourse/models/site";
 import {
   acceptance,
-  exists,
-  query,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 
 acceptance("Sidebar - Category icons", function (needs) {
   needs.user();
 
-  let category1;
-  let category2;
+  needs.site({
+    categories: [
+      {
+        id: 1,
+        name: "Category 1",
+        slug: "category-1",
+        color: "111111",
+      },
+      {
+        id: 2,
+        name: "Category 2",
+        slug: "category-2",
+        color: "000000",
+      },
+    ],
+  });
 
-  needs.hooks.beforeEach(() => {
-    const categories = Site.current().categories;
-    category1 = categories[0];
-    category2 = categories[1];
-
+  needs.hooks.beforeEach(function () {
     settings.category_lock_icon = "wrench";
-    settings.category_icon_list = `${category1.slug},wrench,#FF0000|${category2.slug},question-circle,categoryColor`;
+    settings.category_icon_list = `category-1,wrench,#FF0000|category-2,question-circle,categoryColor`;
   });
 
   test("Icon for category when `category_icon_list` theme setting has been configured", async function (assert) {
-    category2.color = "000000";
-
-    updateCurrentUser({
-      sidebar_category_ids: [category1.id, category2.id],
-    });
+    updateCurrentUser({ sidebar_category_ids: [1, 2] });
 
     await visit("/");
 
-    assert.ok(
-      exists(
-        `.sidebar-section-link-wrapper[data-category-id="${category1.id}"] .prefix-icon.d-icon-wrench`
-      ),
-      `wrench icon is displayed for ${category1.slug} section link's prefix icon`
-    );
+    assert
+      .dom(
+        `.sidebar-section-link-wrapper[data-category-id="1"] .prefix-icon.d-icon-wrench`
+      )
+      .exists(
+        "wrench icon is displayed for category-1 section link's prefix icon"
+      );
 
-    assert.strictEqual(
-      query(
-        `.sidebar-section-link-wrapper[data-category-id="${category1.id}"] .sidebar-section-link-prefix`
-      ).style.color,
-      "rgb(255, 0, 0)",
-      `${category1.slug} section link's prefix icon has the right color`
-    );
+    assert
+      .dom(
+        `.sidebar-section-link-wrapper[data-category-id="1"] .sidebar-section-link-prefix`
+      )
+      .hasStyle(
+        { color: "rgb(255, 0, 0)" },
+        "category-1 section link's prefix icon has the right color"
+      );
 
-    assert.ok(
-      exists(
-        `.sidebar-section-link-wrapper[data-category-id="${category2.id}"] .prefix-icon.d-icon-question-circle`
-      ),
-      `question-circle icon is displayed for ${category2.slug} section link's prefix icon`
-    );
+    assert
+      .dom(
+        `.sidebar-section-link-wrapper[data-category-id="2"] .prefix-icon.d-icon-question-circle`
+      )
+      .exists(
+        "question-circle icon is displayed for category-2 section link's prefix icon"
+      );
 
-    assert.strictEqual(
-      query(
-        `.sidebar-section-link-wrapper[data-category-id="${category2.id}"] .sidebar-section-link-prefix`
-      ).style.color,
-      "rgb(0, 0, 0)",
-      `${category2.slug} section link's prefix icon has the right color`
-    );
+    assert
+      .dom(
+        `.sidebar-section-link-wrapper[data-category-id="2"] .sidebar-section-link-prefix`
+      )
+      .hasStyle(
+        { color: "rgb(0, 0, 0)" },
+        "category-2 section link's prefix icon has the right color"
+      );
   });
 
   test("Prefix badge icon for read restricted categories when `category_lock_icon` theme setting is set", async function (assert) {
-    category1.read_restricted = true;
-
-    updateCurrentUser({
-      sidebar_category_ids: [category1.id],
-    });
+    const site = getOwner(this).lookup("service:site");
+    site.categories[0].read_restricted = true;
+    updateCurrentUser({ sidebar_category_ids: [1] });
 
     await visit("/");
 
-    assert.ok(
-      exists(
-        `.sidebar-section-link-wrapper[data-category-id="${category1.id}"] .prefix-badge.d-icon-wrench`
-      ),
-      "wrench icon is displayed for the section link's prefix badge"
-    );
+    assert
+      .dom(
+        `.sidebar-section-link-wrapper[data-category-id="1"] .prefix-badge.d-icon-wrench`
+      )
+      .exists("wrench icon is displayed for the section link's prefix badge");
   });
 });
