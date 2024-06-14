@@ -172,7 +172,7 @@ export default {
         categoryThemeList.forEach((str) => {
           const [slug, icon, color, match] = str.split(",");
 
-          if (slug && icon && color) {
+          if (slug && icon) {
             const category = site.categories.find((cat) => {
               if (match === "partial") {
                 return cat.slug.toLowerCase().includes(slug.toLowerCase());
@@ -186,9 +186,10 @@ export default {
                 categoryId: category.id,
                 prefixType: "icon",
                 prefixValue: icon,
+                prefixColor: color ? color : category.color,
               };
 
-              if (!color.match(/categoryColo(u*)r/g)) {
+              if (color && !color.match(/categoryColo(u*)r/g)) {
                 opts.prefixColor = color.replace(/^#/, "");
               }
 
