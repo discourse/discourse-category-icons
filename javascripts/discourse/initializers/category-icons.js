@@ -186,11 +186,12 @@ export default {
                 categoryId: category.id,
                 prefixType: "icon",
                 prefixValue: icon,
-                prefixColor: color ? color : category.color,
+                prefixColor: color,
               };
 
-              if (color && !color.match(/categoryColo(u*)r/g)) {
-                opts.prefixColor = color.replace(/^#/, "");
+              // Fix for legacy color declaration
+              if (color?.match(/categoryColo(u*)r/g)) {
+                opts.prefixColor = category.color;
               }
 
               api.registerCustomCategorySectionLinkPrefix(opts);
