@@ -204,17 +204,15 @@ export default {
         const site = api.container.lookup("service:site");
         const slugMap = {};
         for (const str of categoryThemeList) {
-          const [slug, icon, color, match] = str.split(",");
+          let [slug, icon, color, match] = str.split(",");
           if (slug && icon) {
+            slug = slug.toLowerCase();
             for (const cat of site.categories) {
-              if (match === "partial") {
-                if (!cat.slug.toLowerCase().includes(slug.toLowerCase())) {
-                  continue;
-                }
-              } else {
-                if (cat.slug.toLowerCase() !== slug.toLowerCase()) {
-                  continue;
-                }
+              const catSlug = cat.slug.toLowerCase();
+              if (
+                match === "partial" ? !catSlug.includes(slug) : catSlug !== slug
+              ) {
+                continue;
               }
               const opts = {
                 icon,
@@ -223,15 +221,15 @@ export default {
               if (!color || color?.match(/categoryColo(u*)r/g)) {
                 opts.color = `#${cat.color}`;
               }
-              slugMap[cat.slug.toLowerCase()] = opts;
+              slugMap[catSlug] = opts;
             }
           }
         }
         api.decorateCookedElement((elem) => {
-          const categorgHashtags = elem.querySelectorAll(
+          const categoryHashtags = elem.querySelectorAll(
             '.hashtag-cooked[data-type="category"]'
           );
-          for (const hashtag of categorgHashtags) {
+          for (const hashtag of categoryHashtags) {
             const opt = slugMap[hashtag.dataset?.slug?.toLowerCase()];
             if (!opt) {
               continue;
