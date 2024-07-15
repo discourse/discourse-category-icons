@@ -199,6 +199,53 @@ export default {
           }
         });
       }
+
+      if (settings.render_category_icon_in_post) {
+        const site = api.container.lookup("service:site");
+        const slugMap = {};
+        for (const str of categoryThemeList) {
+          const [slug, icon, color, match] = str.split(",");
+          if (slug && icon) {
+            for (const cat of site.categories) {
+              if (match === "partial") {
+                if (!cat.slug.toLowerCase().includes(slug.toLowerCase())) {
+                  continue;
+                }
+              } else {
+                if (cat.slug.toLowerCase() !== slug.toLowerCase()) {
+                  continue;
+                }
+              }
+              const opts = {
+                icon,
+                color,
+              };
+              if (!color || color?.match(/categoryColo(u*)r/g)) {
+                opts.color = `#${cat.color}`;
+              }
+              slugMap[cat.slug.toLowerCase()] = opts;
+            }
+          }
+        }
+        api.decorateCookedElement((elem) => {
+          const categorgHashtags = elem.querySelectorAll(
+            '.hashtag-cooked[data-type="category"]'
+          );
+          for (const hashtag of categorgHashtags) {
+            const opt = slugMap[hashtag.dataset?.slug?.toLowerCase()];
+            if (!opt) {
+              continue;
+            }
+            const newIcon = document.createElement("span");
+            newIcon.classList.add("hashtag-category-icon");
+            newIcon.innerHTML = iconHTML(opt.icon);
+            newIcon.style.color = opt.color;
+            hashtag
+              .querySelector("span.hashtag-category-badge")
+              ?.replaceWith(newIcon);
+          }
+        });
+      }
     });
   },
 };
