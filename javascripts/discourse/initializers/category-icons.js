@@ -3,6 +3,7 @@ import { h } from "virtual-dom";
 import categoriesBoxes from "discourse/components/categories-boxes";
 import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
 import categoryTitleLink from "discourse/components/category-title-link";
+import CategoryHashtagType from "discourse/lib/hashtag-types/category";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { isRTL } from "discourse/lib/text-direction";
 import { escapeExpression } from "discourse/lib/utilities";
@@ -12,10 +13,29 @@ import { helperContext } from "discourse-common/lib/helpers";
 import { iconHTML, iconNode } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
 
+class CategoryHashtagTypeWithIcon extends CategoryHashtagType {
+  constructor(dict, owner) {
+    super(owner);
+    this.dict = dict;
+  }
+  generateIconHTML(hashtag) {
+    const opt = this.dict[hashtag.id];
+    if (opt) {
+      const newIcon = document.createElement("span");
+      newIcon.classList.add("hashtag-category-icon");
+      newIcon.innerHTML = iconHTML(opt.icon);
+      newIcon.style.color = opt.color;
+      return newIcon.outerHTML;
+    } else {
+      return super.generateIconHTML(hashtag);
+    }
+  }
+}
+
 export default {
   name: "category-icons",
 
-  initialize() {
+  initialize(owner) {
     withPluginApi("0.8.26", (api) => {
       let categoryThemeList = settings.category_icon_list.split("|");
       let lockIcon = settings.category_lock_icon || "lock";
@@ -198,6 +218,37 @@ export default {
             }
           }
         });
+      }
+
+      if (api.registerHashtagType) {
+        const site = api.container.lookup("service:site");
+        const dict = {};
+        for (const str of categoryThemeList) {
+          let [slug, icon, color, match] = str.split(",");
+          if (slug && icon) {
+            slug = slug.toLowerCase();
+            for (const cat of site.categories) {
+              const catSlug = cat.slug.toLowerCase();
+              if (
+                match === "partial" ? !catSlug.includes(slug) : catSlug !== slug
+              ) {
+                continue;
+              }
+              const opts = {
+                icon,
+                color,
+              };
+              if (!color || color?.match(/categoryColo(u*)r/g)) {
+                opts.color = `#${cat.color}`;
+              }
+              dict[cat.id] = opts;
+            }
+          }
+        }
+        api.registerHashtagType(
+          "category",
+          new CategoryHashtagTypeWithIcon(dict, owner)
+        );
       }
     });
   },
