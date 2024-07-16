@@ -220,7 +220,7 @@ export default {
         });
       }
 
-      if (settings.render_category_icon_in_post && api.registerHashtagType) {
+      if (api.registerHashtagType) {
         const site = api.container.lookup("service:site");
         const dict = {};
         for (const str of categoryThemeList) {
