@@ -2,5 +2,5 @@ en:
   theme_metadata:
     settings:
       category_icon_list: 'Enter comma-delimited configuration for categories, in the format "slug,icon,color,match". Color can be in hex format (#123456) or left blank, then the default color for the category is used (same as the Badge color). If  match is "partial" then the slug need only partially match the category-slug, otherwise an exact match is required'
-      svg_icons: "List of FontAwesome 5 icons used in this theme component"
-      category_lock_icon: "Enter the name of a FontAwesome 5 icon to display instead of the lock icon next to private categories."
+      svg_icons: "List of FontAwesome 6 icons used in this theme component"
+      category_lock_icon: "Enter the name of a FontAwesome 6 icon to display instead of the lock icon next to private categories."
