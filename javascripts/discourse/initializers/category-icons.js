@@ -18,6 +18,7 @@ class CategoryHashtagTypeWithIcon extends CategoryHashtagType {
     super(owner);
     this.dict = dict;
   }
+
   generateIconHTML(hashtag) {
     const opt = this.dict[hashtag.id];
     if (opt) {
