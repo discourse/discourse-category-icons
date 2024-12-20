@@ -1,9 +1,9 @@
 category_icon_list:
-  default: "help,question-circle,#CC0000,partial|"
+  default: "help,circle-question,#CC0000,partial|"
   type: "list"
   list_type: "simple"
 svg_icons:
-  default: "question-circle"
+  default: "circle-question"
   type: "list"
   list_type: "compact"
 category_lock_icon:
