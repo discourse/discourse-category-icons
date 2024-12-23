@@ -12,8 +12,9 @@ export default function migrate(settings) {
       return props.join(",");
     },
     svg_icons: (icon) => convertIconName(icon),
+    category_lock_icon: (icon) => convertIconName(icon),
   };
-  const settingNames = ["category_icon_list", "svg_icons"];
+  const settingNames = ["category_icon_list", "svg_icons", "category_lock_icon"];
 
   settingNames.forEach((settingName) => {
     const oldSetting = settings.get(settingName);
