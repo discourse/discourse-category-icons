@@ -5,10 +5,9 @@ export default function migrate(settings) {
         return category_icon_props;
       }
       let props = category_icon_props.split(",");
-      if (props.length < 2) {
-        return props;
+      if (props.length >= 2) {
+        props[1] = convertIconName(props[1]);
       }
-      props[1] = convertIconName(props[1]);
       return props.join(",");
     },
     svg_icons: (icon) => convertIconName(icon),
