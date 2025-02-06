@@ -1,8 +1,8 @@
 import { visit } from "@ember/test-helpers";
 import { test } from "qunit";
+import { cloneJSON } from "discourse/lib/object";
 import TopicFixtures from "discourse/tests/fixtures/topic";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
-import { cloneJSON } from "discourse-common/lib/object";
 
 function makeHashtagHTML(category) {
   return `<a class=\"hashtag-cooked\" href=\"${category.href}\" data-type=\"category\" data-slug=\"${category.slug}\" data-id=\"${category.id}\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>${category.name}</span></a>`;

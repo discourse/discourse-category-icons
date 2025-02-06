@@ -3,15 +3,15 @@ import { h } from "virtual-dom";
 import categoriesBoxes from "discourse/components/categories-boxes";
 import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
 import categoryTitleLink from "discourse/components/category-title-link";
+import getURL from "discourse/lib/get-url";
 import CategoryHashtagType from "discourse/lib/hashtag-types/category";
+import { helperContext } from "discourse/lib/helpers";
+import { iconHTML, iconNode } from "discourse/lib/icon-library";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { isRTL } from "discourse/lib/text-direction";
 import { escapeExpression } from "discourse/lib/utilities";
 import Category from "discourse/models/category";
-import getURL from "discourse-common/lib/get-url";
-import { helperContext } from "discourse-common/lib/helpers";
-import { iconHTML, iconNode } from "discourse-common/lib/icon-library";
-import I18n from "I18n";
+import { i18n } from "discourse-i18n";
 
 class CategoryHashtagTypeWithIcon extends CategoryHashtagType {
   constructor(dict, owner) {
@@ -76,7 +76,7 @@ export default {
       }
 
       function buildTopicCount(count) {
-        return `<span class="topic-count" aria-label="${I18n.t(
+        return `<span class="topic-count" aria-label="${i18n(
           "category_row.topic_count",
           { count }
         )}">&times; ${count}</span>`;
@@ -157,7 +157,7 @@ export default {
 
         if (opts.plusSubcategories && opts.lastSubcategory) {
           afterBadgeWrapper += `<span class="plus-subcategories">
-            ${I18n.t("category_row.plus_subcategories", {
+            ${i18n("category_row.plus_subcategories", {
               count: opts.plusSubcategories,
             })}
             </span>`;
