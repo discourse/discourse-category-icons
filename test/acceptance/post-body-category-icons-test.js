@@ -38,7 +38,7 @@ acceptance("Post body - Category icons", function (needs) {
 
   needs.hooks.beforeEach(function () {
     settings.category_lock_icon = "wrench";
-    settings.category_icon_list = `category-1,wrench,#FF0000|category-2,question-circle,categoryColor`;
+    settings.category_icon_list = `category-1,wrench,#FF0000|category-2,circle-question,categoryColor`;
   });
 
   needs.pretender((server, helper) => {
@@ -71,9 +71,9 @@ acceptance("Post body - Category icons", function (needs) {
 
     assert
       .dom(
-        `.cooked .hashtag-cooked[data-id="2"] .hashtag-category-icon .d-icon-question-circle`
+        `.cooked .hashtag-cooked[data-id="2"] .hashtag-category-icon .d-icon-circle-question`
       )
-      .exists("question-circle icon is displayed for category-2");
+      .exists("circle-question icon is displayed for category-2");
 
     assert
       .dom(`.cooked .hashtag-cooked[data-id="2"] .hashtag-category-icon`)

@@ -28,7 +28,7 @@ acceptance("Sidebar - Category icons", function (needs) {
 
   needs.hooks.beforeEach(function () {
     settings.category_lock_icon = "wrench";
-    settings.category_icon_list = `category-1,wrench,#FF0000|category-2,question-circle,categoryColor`;
+    settings.category_icon_list = `category-1,wrench,#FF0000|category-2,circle-question,categoryColor`;
   });
 
   test("Icon for category when `category_icon_list` theme setting has been configured", async function (assert) {
@@ -55,10 +55,10 @@ acceptance("Sidebar - Category icons", function (needs) {
 
     assert
       .dom(
-        `.sidebar-section-link-wrapper[data-category-id="2"] .prefix-icon.d-icon-question-circle`
+        `.sidebar-section-link-wrapper[data-category-id="2"] .prefix-icon.d-icon-circle-question`
       )
       .exists(
-        "question-circle icon is displayed for category-2 section link's prefix icon"
+        "circle-question icon is displayed for category-2 section link's prefix icon"
       );
 
     assert
