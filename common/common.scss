@@ -1,6 +1,6 @@
 .badge-category.--has-icon {
   // hide default bullet when icon is set
-  &:before {
+  &::before {
     display: none;
   }
 }
@@ -9,6 +9,7 @@
   display: inline-flex;
   align-self: center;
   color: var(--category-badge-color);
+
   .d-icon {
     color: inherit;
     font-size: var(--font-up-2);
