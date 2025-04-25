@@ -130,6 +130,8 @@ export default {
           let itemColor = iconItem[2] ? `style="color: ${iconItem[2]}"` : "";
           let itemIcon = iconItem[1] !== "" ? iconHTML(iconItem[1]) : "";
           html += `<span ${itemColor} class="badge-category__icon">${itemIcon}</span>`;
+        } else {
+          html += `<span data-category-id="${category.id}" class="badge-category --style-square"></span>`;
         }
         /// End custom category icon
 
@@ -166,22 +168,6 @@ export default {
       }
 
       api.replaceCategoryLinkRenderer(categoryIconsRenderer);
-
-      api.createWidget("category-icon", {
-        tagName: "div.category-icon-widget",
-        html(attrs) {
-          let iconItem = getIconItem(attrs.category.slug);
-          if (iconItem) {
-            let itemColor = iconItem[2]
-              ? iconItem[2].match(/categoryColo(u*)r/g)
-                ? `color: #${attrs.category.color}`
-                : `color: ${iconItem[2]}`
-              : "";
-            let itemIcon = iconItem[1] !== "" ? iconNode(iconItem[1]) : "";
-            return h("span.category-icon", { style: itemColor }, itemIcon);
-          }
-        },
-      });
 
       if (api.registerCustomCategorySectionLinkLockIcon) {
         api.registerCustomCategorySectionLinkLockIcon(lockIcon);

@@ -83,7 +83,7 @@ acceptance("Post body - Category icons", function (needs) {
       );
 
     assert
-      .dom(`.cooked .hashtag-cooked[data-id="3"] .hashtag-category-badge`)
+      .dom(`.cooked .hashtag-cooked[data-id="3"] .hashtag-category-square`)
       .exists("unconfigured categories have a default badge");
   });
 });
