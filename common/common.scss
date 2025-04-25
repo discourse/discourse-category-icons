@@ -32,3 +32,7 @@
 .subcategory .category-icon-widget {
   display: none;
 }
+
+.badge-category__wrapper .badge-category.--has-icon {
+  gap: unset;
+}
