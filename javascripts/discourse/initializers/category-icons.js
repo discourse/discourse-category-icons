@@ -1,12 +1,11 @@
 import { get } from "@ember/object";
-import { h } from "virtual-dom";
 import categoriesBoxes from "discourse/components/categories-boxes";
 import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
 import categoryTitleLink from "discourse/components/category-title-link";
 import getURL from "discourse/lib/get-url";
 import CategoryHashtagType from "discourse/lib/hashtag-types/category";
 import { helperContext } from "discourse/lib/helpers";
-import { iconHTML, iconNode } from "discourse/lib/icon-library";
+import { iconHTML } from "discourse/lib/icon-library";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { isRTL } from "discourse/lib/text-direction";
 import { escapeExpression } from "discourse/lib/utilities";
