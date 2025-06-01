@@ -1,7 +1,4 @@
 import { get } from "@ember/object";
-import categoriesBoxes from "discourse/components/categories-boxes";
-import categoriesBoxesWithTopics from "discourse/components/categories-boxes-with-topics";
-import categoryTitleLink from "discourse/components/category-title-link";
 import getURL from "discourse/lib/get-url";
 import CategoryHashtagType from "discourse/lib/hashtag-types/category";
 import { helperContext } from "discourse/lib/helpers";
@@ -39,18 +36,6 @@ export default {
     withPluginApi("0.8.26", (api) => {
       let categoryThemeList = settings.category_icon_list.split("|");
       let lockIcon = settings.category_lock_icon || "lock";
-
-      categoryTitleLink.reopen({
-        lockIcon,
-      });
-
-      categoriesBoxes.reopen({
-        lockIcon,
-      });
-
-      categoriesBoxesWithTopics.reopen({
-        lockIcon,
-      });
 
       function getIconItem(categorySlug) {
         if (!categorySlug) {
