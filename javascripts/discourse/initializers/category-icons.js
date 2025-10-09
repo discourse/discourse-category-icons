@@ -33,7 +33,7 @@ export default {
   name: "category-icons",
 
   initialize(owner) {
-    withPluginApi("0.8.26", (api) => {
+    withPluginApi((api) => {
       let categoryThemeList = settings.category_icon_list.split("|");
       let lockIcon = settings.category_lock_icon || "lock";
 
